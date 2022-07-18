@@ -1,0 +1,123 @@
+{
+	"easycom": {
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+	},
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+            "path" : "pages/home/home",
+            "style": {
+            	"navigationBarTitleText": "Pearl",
+            	"navigationBarBackgroundColor": "#fff",
+            	"enablePullDownRefresh": false
+            }
+        }
+        ,{
+            "path" : "pages/user/user",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "plug/AChart/AChart",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "AChart",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "subTools/TtComment/TtComment",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "subTools/Webview/Webview",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "games/MoveBox/MoveBox",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "推箱子",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "games/G2048/G2048",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "plug/Btn/Btn",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "赛博朋克2077 '故障风'按钮",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "games/Gobang/Gobang",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "五子棋",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "project/seeStock/seeStock",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "趣看行情",
+				"navigationBarBackgroundColor": "#fff",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-pearl",
+		"navigationBarBackgroundColor": "#F4F5F6",
+		"backgroundColor": "#F4F5F6"
+	},
+	"tabBar": {
+	    "color": "#303133",
+	    "selectedColor": "#316DF6",
+	    "backgroundColor": "#ffffff",
+	    "borderStyle": "black",
+	    "list": [
+	        {
+	            "pagePath": "pages/home/home",
+	            "iconPath": "./static/images/tabbar/home.png",                
+	            "selectedIconPath": "./static/images/tabbar/home-active.png",    
+	            "text": "珍珠"
+	        }, 
+			{
+			    "pagePath": "pages/user/user",
+			    "iconPath": "./static/images/tabbar/user.png",                
+			    "selectedIconPath":"./static/images/tabbar/user-active.png",    
+			    "text": "我的"
+			}
+	    ]
+	}
+}
