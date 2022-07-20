@@ -124,6 +124,13 @@
 								icon: 'https://cos765.sunwaystech.com//images/equities/privilege/1/xinxiu.png',
 								type: 1,
 								url: '/games/MoveBox/MoveBox',
+							},
+							{
+								id: 2,
+								title: '五子棋',
+								icon: 'https://cos765.sunwaystech.com//images/equities/privilege/1/xinxiu.png',
+								type: 1,
+								url: '/games/Gobang/Gobang',
 							}
 						]
 					}
