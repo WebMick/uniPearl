@@ -44,6 +44,9 @@
 					</picker>
 				</view>
 			</view>
+			<view class="item revoke" @click="revoke">
+				<view class="title">悔棋</view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -66,6 +69,11 @@
 					}
 					return className;
 				}
+			},
+			last(){
+				let { playOrder, playOrder: { length } } = this;
+				let last  = playOrder[length - 1];
+				return last; // 记录最后一次的下棋坐标
 			}
 		},
 		data() {
@@ -82,9 +90,9 @@
 				isWinData: [
 					[], [], [], []
 				], // 根据当前点，生成的四条线 作为判断输赢的数据
-				last: {}, // 记录最后一次的下棋坐标
 				winner: null , // 胜者
 				canSetGame: false, // 是否可以设置游戏基础信息
+				playOrder: [], // 记录下棋的顺序，以作为悔棋的数据
 			};
 		},
 		methods: {
@@ -96,6 +104,7 @@
 					let { size } = checkerMap;
 					this.canSetGame = size > 0;
 					if(!checkerMap.has(key)){
+						this.playOrder = [...this.playOrder, {x, y}];
 						let role = currentRole == 0 ? 1 : 0;
 						let item = {
 							x,
@@ -104,15 +113,14 @@
 						};
 						// 下完一颗 换边
 						this.currentRole = role;
-						this.last = {
-							x,
-							y
-						}
 						this.checkerMap.set(key, item);
 						this.isWin(x, y);
 						// 未分出胜负 标记自动下棋 人机对战 才下棋
 						if(!this.winner && !isAuto && model == 0){
-							this.autoAdd(x, y, true);
+							let timer = setTimeout(()=>{
+								clearTimeout(timer);
+								this.autoAdd(x, y, true);
+							}, 1000);
 						};
 					}else{
 						this.toast('此位置已下过棋子！');
@@ -193,24 +201,43 @@
 			autoAdd(x, y){
 				// 是否已经自动下过了
 				let isClick = false;
-				// -- 牛逼模式，先查看对方有没有 3连 4连
+				// -- 牛逼模式，先查看对方有没有 3、4连
+				//  四缺一两边没有的，也要堵住
 				if(this.level == 1){
-					let { checkerMap } = this;
-					let txt1 = this.firstHand == 0 ? '000' : '111',
-						txt2 = this.firstHand == 0 ? '0000' : '1111',
-						txt3 = this.firstHand == 0 ? '1000' : '0111',
-						txt4 = this.firstHand == 0 ? '0001' : '1110';
+					let { checkerMap, firstHand } = this;
+					let txt1 = firstHand == 0 ? '000' : '111',
+						txt2 = firstHand == 0 ? '0000' : '1111',
+						txt3 = firstHand == 0 ? '1000' : '0111',
+						txt4 = firstHand == 0 ? '0001' : '1110',
+						txt5 = firstHand == 0 ? '300303' : '311313',
+						txt6 = firstHand == 0 ? '303003' : '313113';
 					this.isWinData.map((item, index) => {
 						let role = item.map(cItem => cItem.role || 3);
 						let str  = role.join('');
 						let _index1 = str.indexOf(txt1),
 							_index2 = str.indexOf(txt2),
 							_index3 = str.indexOf(txt3),
-							_index4 = str.indexOf(txt4);	
-						if(_index1 >= 0 && _index2 < 0 && _index3 < 0 && _index4 < 0){
+							_index4 = str.indexOf(txt4),
+							_index5 = str.indexOf(txt5),
+							_index6 = str.indexOf(txt6);
+						// 四缺一两边没有的，也要堵住
+						if(_index5 >= 0 || _index6 >= 0){
+							let spaceIndex;
+							if(_index5 >= 0 && _index6 < 0){
+								spaceIndex = _index5 + 3;
+							}
+							else if(_index6 >= 0 && _index5 < 0){
+								spaceIndex = _index5 + 2;
+							}
+							let { x: newx, y: newy } = item[spaceIndex];
+							console.log({item})
+							// this.playChess(newx, newy, true);
+							isClick = true;
+						}
+						else if(_index1 >= 0 && _index2 < 0 && _index3 < 0 && _index4 < 0){
 							// 三连击了, 两边还没有子，堵住一边
 							// 三连击开始的 x = _index1 y = ？？？？
-							let { x: newx, y: newy } = this.isWinData[index][_index1];
+							let { x: newx, y: newy } = item[_index1];
 							if(index == 0){
 								newy = newy - 1;
 								let key = `${newx}-${newy}`;
@@ -248,7 +275,7 @@
 							isClick = true;
 						}
 						else if(_index2 >= 0){
-							let { x: newx, y: newy } = this.isWinData[index][_index2];
+							let { x: newx, y: newy } = item[_index2];
 							if(index == 0){
 								newy = newy - 1;
 								let key = `${newx}-${newy}`;
@@ -358,6 +385,21 @@
 			changeModel(e){
 				let { detail: { value } } = e;
 				this.model = value;
+			},
+			// 悔棋
+			revoke(){
+				let { playOrder, playOrder: { length } } = this;
+				let last  = playOrder[length - 1],
+					last2 = playOrder[length - 2];
+				let { x, y } = last,
+					{ x: x2, y: y2 } = last2;
+				let key  = `${x}-${y}`,
+					key2 = `${x2}-${y2}`;
+				if(this.checkerMap.has(key) && this.checkerMap.has(key2)){
+					this.checkerMap.delete(key);
+					this.checkerMap.delete(key2);
+					this.$forceUpdate()
+				}
 			}
 		}
 	}
@@ -486,12 +528,15 @@
 						height: 100%;
 					}
 				}
+				&.revoke{
+					z-index: 10;
+				}
 			}
 		}
 	}
 	@keyframes ani{
 		0%,100%{
-			opacity: 1;
+			opacity: 0.9;
 			transform: translate(-50%, -50%) scale(1);
 		}
 		50%{
