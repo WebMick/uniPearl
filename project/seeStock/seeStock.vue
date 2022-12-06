@@ -7,13 +7,17 @@
 				</view>
 				<view class="right">
 					<view class="title">趣看行情</view>
-					<view class="subTitle">股票行情,股票竞猜,上证指数,深证指数,量化交易,股票,赚钱,猜涨跌,现金红包</view>
+					<view class="subText">股票行情,股票竞猜,上证指数,深证指数,量化交易,股票,赚钱,猜涨跌,现金红包</view>
 				</view>
 			</view>
-			<view class="text">趣看行情是基于微信小程序的股票行情查看平台，用户通过竞猜股票涨跌，组合涨跌的玩法来获取对应的奖励。</view>
+			<view class="subText">趣看行情是基于微信小程序的股票行情查看平台，用户通过竞猜股票涨跌，组合涨跌的玩法来获取对应的奖励。</view>
 		</view>
 		<view class="item">
 			<view class="subTitle">主要职责</view>
+			<view class="text">1.</view>
+		</view>
+		<view class="item">
+			<view class="subTitle">项目内容</view>
 		</view>
 	</view>
 </template>
@@ -63,6 +67,11 @@
 			}
 		}
 		.text{
+			margin-top: 10rpx;
+			font-size: 28rpx;
+			line-height: 1.5em;
+		}
+		.subText{
 			margin-top: 10rpx;
 			font-size: 26rpx;
 			color: #909193;
